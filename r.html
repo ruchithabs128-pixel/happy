@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday Ranjith</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+    body {
+        margin: 0;
+        background: #111;
+        color: #fff;
+        font-family: 'Poppins', sans-serif;
+        text-align: center;
+        overflow-x: hidden;
+        overflow-y: auto; /* allow vertical scrolling */
+        scroll-behavior: smooth; /* smooth scrolling */
+    }
+
+    h1 {
+        margin-top: 100px;
+        font-size: 42px;
+        animation: fadeIn 2s ease-in forwards;
+        opacity: 0;
+    }
+
+    .btn {
+        margin-top: 40px;
+        padding: 12px 30px;
+        font-size: 18px;
+        background: #f39c12;
+        color: #111;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .btn:hover {
+        background: #e67e22;
+    }
+
+    .message {
+        margin: 30px auto;
+        width: 90%;
+        max-width: 700px;
+        background: rgba(255,255,255,0.08);
+        padding: 25px;
+        border-radius: 15px;
+        line-height: 1.8;
+        font-size: 20px;
+        opacity: 0;
+        text-align: left;
+        animation: fadeIn 2s ease-in forwards;
+        white-space: pre-line; /* preserves line breaks */
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0; transform: translateY(20px);}
+        to {opacity: 1; transform: translateY(0);}
+    }
+
+    #sparkCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+    }
+</style>
+</head>
+<body>
+
+<h1>🎉 Happy Birthday, Ranjith! 🎉</h1>
+<button class="btn" onclick="showMessage()">Celebrate Now!</button>
+
+<!-- Single Combined Message -->
+<div id="msg" class="message"></div>
+
+<!-- Sparkle effect -->
+<canvas id="sparkCanvas"></canvas>
+
+<script>
+const combinedMessage = 
+`🥰Another year, another start,
+A journey of the mind and heart.
+May you grow, may you find your way,
+With meaning in each bright new day.
+May your heart feel love in all you do,
+A life well-lived, a soul that truly grew.🥰
+
+☺️Life is a journey, not a destination.
+Remember to pause, reflect, and appreciate how far you’ve come.
+Be kind, be patient, and never stop chasing your dreams.
+This year, I wish you clarity and confidence in every decision you make.
+May your talents shine and your efforts be recognized.
+May you step into a new year stronger, wiser, and happier.☺️
+
+❤️Once again, Happy Birthday, Ranjith!❤️
+May all your goals, dreams, and aspirations come true.`;
+
+function showMessage() {
+    const msgBox = document.getElementById("msg");
+    msgBox.innerText = combinedMessage;
+    msgBox.style.display = "block";
+
+    // Scroll smoothly to the message
+    msgBox.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    startSparkle(); // trigger the firework effect immediately
+}
+
+/* Sparkle / Firework Effect */
+function startSparkle() {
+    const canvas = document.getElementById('sparkCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles = [];
+    const colors = ['#FFD700','#FF6347','#00BFFF','#FF69B4','#ADFF2F'];
+
+    function createParticle(x, y) {
+        const p = {
+            x: x,
+            y: y,
+            vx: (Math.random() - 0.5) * 6,
+            vy: (Math.random() - 1.5) * 6,
+            size: Math.random() * 4 + 2,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            alpha: 1,
+            decay: Math.random() * 0.01 + 0.005
+        };
+        particles.push(p);
+    }
+
+    function animate() {
+        ctx.fillStyle = 'rgba(0,0,0,0.15)';
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+
+        for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            p.alpha -= p.decay;
+            if(p.alpha <= 0){
+                particles.splice(i,1);
+                i--;
+                continue;
+            }
+            ctx.fillStyle = `rgba(${hexToRgb(p.color)},${p.alpha})`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+            ctx.fill();
+        }
+
+        requestAnimationFrame(animate);
+    }
+
+    function hexToRgb(hex) {
+        hex = hex.replace('#','');
+        const bigint = parseInt(hex,16);
+        const r = (bigint >> 16) & 255;
+        const g = (bigint >> 8) & 255;
+        const b = bigint & 255;
+        return r+','+g+','+b;
+    }
+
+    const interval = setInterval(() => {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height / 2;
+        for(let i=0;i<30;i++){
+            createParticle(x, y);
+        }
+    }, 200);
+
+    setTimeout(() => clearInterval(interval), 3000);
+    animate();
+}
+</script>
+
+</body>
+</html>
